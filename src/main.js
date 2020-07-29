@@ -2,8 +2,8 @@
 
 const TASKS_COUNT = 3;
 
-const mainElement = document.querySelector('.main');
-const mainControlElement = mainElement.querySelector('.main__control');
+const mainElement = document.querySelector(`.main`);
+const mainControlElement = mainElement.querySelector(`.main__control`);
 
 // Возвращает разметку меню
 const createMenuElement = () => (
@@ -373,18 +373,18 @@ const render = (container, node, place) => {
 };
 
 // Отрисовка компонентов
-render(mainControlElement, createMenuElement(), 'beforeend');
-render(mainElement, createFilterElement(), 'beforeend');
-render(mainElement, createBoardElement(), 'beforeend');
+render(mainControlElement, createMenuElement(), `beforeend`);
+render(mainElement, createFilterElement(), `beforeend`);
+render(mainElement, createBoardElement(), `beforeend`);
 
-const boardElement = mainElement.querySelector('.board');
-const boardTasksElement = boardElement.querySelector('.board__tasks');
+const boardElement = mainElement.querySelector(`.board`);
+const boardTasksElement = boardElement.querySelector(`.board__tasks`);
 
-render(boardElement, createFilterListElement(), 'afterbegin');
-render(boardTasksElement, createCardEditElement(), 'beforeend');
+render(boardElement, createFilterListElement(), `afterbegin`);
+render(boardTasksElement, createCardEditElement(), `beforeend`);
 
 for (let i = 0; i < TASKS_COUNT; i++) {
-  render(boardTasksElement, createCardElement(), 'beforeend');
+  render(boardTasksElement, createCardElement(), `beforeend`);
 }
 
-render(boardElement, createLoadMoreButtonElement(), 'beforeend');
+render(boardElement, createLoadMoreButtonElement(), `beforeend`);
