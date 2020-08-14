@@ -1,5 +1,22 @@
 import {COLORS} from '../const';
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from '../utils.js';
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate, createElement} from '../utils.js';
+
+const BLANK_TASK = {
+  color: COLORS[0],
+  description: ``,
+  dueDate: null,
+  repeating: {
+    mo: false,
+    tu: false,
+    we: false,
+    th: false,
+    fr: false,
+    sa: false,
+    su: false
+  },
+  isFavorite: false,
+  isArchive: false
+};
 
 const createCardEditDateElement = (dueDate) => {
   return `<button class="card__date-deadline-toggle" type="button">
@@ -58,24 +75,9 @@ const createCardEditColorsElement = (currentColor) => {
 };
 
 // Возвращает разметку редактирования карточки
-export const createCardEditElement = (task = {}) => {
-  const {
-    description = ``,
-    dueDate = null,
-    repeating = {
-      mo: false,
-      tu: false,
-      we: false,
-      th: false,
-      fr: false,
-      sa: false,
-      su: false
-    },
-    color = `black`,
-    // isFavorite = false,
-    // isArchive = false,
+const createCardEditElement = (task) => {
+  const {color, description, dueDate, repeating} = task;
 
-  } = task;
   const deadlineClassName = isTaskExpired(dueDate) ? `card--deadline` : ``;
   const repeatClassName = isTaskRepeating(repeating) ? `card--repeat` : ``;
   const dateElement = createCardEditDateElement(dueDate);
@@ -126,3 +128,25 @@ export const createCardEditElement = (task = {}) => {
     </form>
   </article>`;
 };
+
+export default class TaskEdit {
+  constructor(task) {
+    this._task = task || BLANK_TASK;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCardEditElement(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
