@@ -31,12 +31,25 @@ const renderTask = (taskListElement, task) => {
     taskListElement.replaceChild(taskElement.getElement(), taskEditElement.getElement());
   };
 
-  taskElement.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, replaceCardToForm);
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      replaceFormToCard();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  taskElement.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+    replaceCardToForm();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
 
   taskEditElement.getElement().querySelector(`form`).addEventListener(`submit`, (evt) => {
     evt.preventDefault();
     replaceFormToCard();
+    document.removeEventListener(`keydown`, onEscKeyDown);
   });
+
 
   render(taskListElement, taskElement.getElement(), RenderPosition.BEFOREEND);
 };
