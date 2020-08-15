@@ -1,8 +1,7 @@
-import {} from '../utils.js';
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from '../utils.js';
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate, createElement} from '../utils.js';
 
 // Возвращает разметку карточки
-export const createCardElement = (task) => {
+const createCardElement = (task) => {
   const {color, description, dueDate, repeating, isFavorite, isArchive} = task;
   const date = dueDate === null ? `` : humanizeTaskDueDate(dueDate);
   const deadlineClassName = isTaskExpired(dueDate) ? `card--deadline` : ``;
@@ -53,3 +52,25 @@ export const createCardElement = (task) => {
     </div>
   </article>`;
 };
+
+export default class Task {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCardElement(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

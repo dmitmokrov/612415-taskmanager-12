@@ -1,5 +1,7 @@
+import {createElement} from '../utils.js';
+
 // Возвращает разметку меню
-export const createMenuElement = () => (
+const createMenuElement = () => (
   `<section class="control__btn-wrap">
     <input
       type="radio"
@@ -29,3 +31,24 @@ export const createMenuElement = () => (
     >
   </section>`
 );
+
+export default class Menu {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createMenuElement();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
