@@ -1,4 +1,5 @@
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate, createElement} from '../utils.js';
+import AbstractView from './abstract.js';
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from '../utils.js';
 
 // Возвращает разметку карточки
 const createCardElement = (task) => {
@@ -53,24 +54,13 @@ const createCardElement = (task) => {
   </article>`;
 };
 
-export default class Task {
+export default class Task extends AbstractView {
   constructor(task) {
+    super();
     this._task = task;
-    this._element = null;
   }
 
   getTemplate() {
     return createCardElement(this._task);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
