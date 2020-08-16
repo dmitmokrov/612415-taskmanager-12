@@ -9,7 +9,7 @@ import NoTaskView from './view/no-task.js';
 import LoadMoreButtonView from './view/load-more-button.js';
 import {generateTask} from './mock/task.js';
 import {generateFilter} from './mock/filter.js';
-import {render, RenderPosition} from './utils.js';
+import {render, RenderPosition, replace, remove} from './utils/render.js';
 
 const TASKS_COUNT = 15;
 const TASKS_COUNT_PER_STEP = 8;
@@ -26,11 +26,11 @@ const renderTask = (taskListElement, task) => {
   const taskEditElement = new TaskEditView(task);
 
   const replaceCardToForm = () => {
-    taskListElement.replaceChild(taskEditElement.getElement(), taskElement.getElement());
+    replace(taskEditElement, taskElement);
   };
 
   const replaceFormToCard = () => {
-    taskListElement.replaceChild(taskElement.getElement(), taskEditElement.getElement());
+    replace(taskElement, taskEditElement);
   };
 
   const onEscKeyDown = (evt) => {
@@ -51,22 +51,22 @@ const renderTask = (taskListElement, task) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  render(taskListElement, taskElement.getElement(), RenderPosition.BEFOREEND);
+  render(taskListElement, taskElement, RenderPosition.BEFOREEND);
 };
 
 const renderBoard = (boardContainer, boardTasks) => {
   const boardElement = new BoardView();
   const boardTasksElement = new TaskListView();
 
-  render(boardContainer, boardElement.getElement(), RenderPosition.BEFOREEND);
-  render(boardElement.getElement(), boardTasksElement.getElement(), RenderPosition.BEFOREEND);
+  render(boardContainer, boardElement, RenderPosition.BEFOREEND);
+  render(boardElement, boardTasksElement, RenderPosition.BEFOREEND);
 
   if (boardTasks.every((task) => task.isArchive)) {
-    render(boardElement.getElement(), new NoTaskView().getElement(), RenderPosition.AFTERBEGIN);
+    render(boardElement, new NoTaskView(), RenderPosition.AFTERBEGIN);
     return;
   }
 
-  render(boardElement.getElement(), new SortView().getElement(), RenderPosition.AFTERBEGIN);
+  render(boardElement, new SortView(), RenderPosition.AFTERBEGIN);
 
   boardTasks
     .slice(0, Math.min(tasks.length, TASKS_COUNT_PER_STEP))
@@ -77,7 +77,7 @@ const renderBoard = (boardContainer, boardTasks) => {
 
     const loadMoreButton = new LoadMoreButtonView();
 
-    render(boardElement.getElement(), loadMoreButton.getElement(), RenderPosition.BEFOREEND);
+    render(boardElement, loadMoreButton, RenderPosition.BEFOREEND);
 
     loadMoreButton.setClickHandler(() => {
       boardTasks
@@ -87,15 +87,14 @@ const renderBoard = (boardContainer, boardTasks) => {
       renderedTasksCount += TASKS_COUNT_PER_STEP;
 
       if (renderedTasksCount >= boardTasks.length) {
-        loadMoreButton.getElement().remove();
-        loadMoreButton.removeElement();
+        remove(loadMoreButton);
       }
     });
   }
 };
 
 // Отрисовка компонентов
-render(mainControlElement, new MenuView().getElement(), RenderPosition.BEFOREEND);
-render(mainElement, new FilterView(filters).getElement(), RenderPosition.BEFOREEND);
+render(mainControlElement, new MenuView(), RenderPosition.BEFOREEND);
+render(mainElement, new FilterView(filters), RenderPosition.BEFOREEND);
 
 renderBoard(mainElement, tasks);
