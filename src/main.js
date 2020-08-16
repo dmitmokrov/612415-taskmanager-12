@@ -41,13 +41,12 @@ const renderTask = (taskListElement, task) => {
     }
   };
 
-  taskElement.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+  taskElement.setEditClickHandler(() => {
     replaceCardToForm();
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
-  taskEditElement.getElement().querySelector(`form`).addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
+  taskEditElement.setFormSubmitHandler(() => {
     replaceFormToCard();
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
@@ -80,10 +79,7 @@ const renderBoard = (boardContainer, boardTasks) => {
 
     render(boardElement.getElement(), loadMoreButton.getElement(), RenderPosition.BEFOREEND);
 
-
-    loadMoreButton.getElement().addEventListener(`click`, (evt) => {
-      evt.preventDefault();
-
+    loadMoreButton.setClickHandler(() => {
       boardTasks
         .slice(renderedTasksCount, renderedTasksCount + TASKS_COUNT_PER_STEP)
         .forEach((boardTask) => renderTask(boardTasksElement.getElement(), boardTask));
