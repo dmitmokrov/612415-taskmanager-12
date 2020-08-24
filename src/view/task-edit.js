@@ -145,6 +145,10 @@ export default class TaskEdit extends SmartView {
     this._setInnerHandlers();
   }
 
+  reset(task) {
+    this.updateData(TaskEdit.parseTaskToData(task));
+  }
+
   getTemplate() {
     return createCardEditElement(this._data);
   }
