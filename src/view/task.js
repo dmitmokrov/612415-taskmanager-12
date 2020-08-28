@@ -1,10 +1,10 @@
 import AbstractView from './abstract.js';
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from '../utils/task.js';
+import {isTaskExpired, isTaskRepeating, formatTaskDueDate} from '../utils/task.js';
 
 // Возвращает разметку карточки
 const createCardElement = (task) => {
   const {color, description, dueDate, repeating, isFavorite, isArchive} = task;
-  const date = dueDate === null ? `` : humanizeTaskDueDate(dueDate);
+  const date = formatTaskDueDate(dueDate);
   const deadlineClassName = isTaskExpired(dueDate) ? `card--deadline` : ``;
   const repeatClassName = isTaskRepeating(repeating) ? `card--repeat` : ``;
   const favoriteClassName = isFavorite ? `card__btn--favorites card__btn--disabled` : `card__btn--favorites`;
