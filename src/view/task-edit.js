@@ -1,3 +1,4 @@
+import he from 'he';
 import SmartView from './smart.js';
 import {COLORS} from '../const';
 import {isTaskRepeating, formatTaskDueDate} from '../utils/task.js';
@@ -103,7 +104,7 @@ const createCardEditElement = (data) => {
               class="card__text"
               placeholder="Start typing your text here..."
               name="text"
-            >${description}</textarea>
+            >${he.encode(description)}</textarea>
           </label>
         </div>
 
